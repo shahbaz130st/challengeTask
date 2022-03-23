@@ -1,21 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import _ from "lodash";
 
-export const useApi = url => {
+export const useApi = () => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        apiCall()
-    }, []);
-    const apiCall = async () => {
-        axios
-            .get(url)
+    const apiCall = async (url) => {
+        setIsLoading(true)
+        axios.get(url)
             .then(({ data }) => {
-                var newObject = _.cloneDeep(data);
-                console.log(newObject)
                 setData(data);
                 setIsLoading(false);
             })
@@ -23,6 +17,6 @@ export const useApi = url => {
                 setError("Something went wrong");
             });
     }
-
-    return [isLoading, data, error];
+    return [isLoading, data, error,apiCall];
 };
+  
